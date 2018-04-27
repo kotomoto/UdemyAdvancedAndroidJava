@@ -19,12 +19,14 @@ import javax.inject.Inject;
 import com.koto.advancedandroid.R;
 import com.koto.advancedandroid.di.Injector;
 import com.koto.advancedandroid.di.ScreenInjector;
+import com.koto.advancedandroid.ui.ScreenNavigator;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
     private static final String INSTANCE_ID_KEY = "instance_id";
 
     @Inject ScreenInjector screenInjector;
+    @Inject ScreenNavigator screenNavigator;
 
     private String instanceId;
     private Router router;
@@ -45,6 +47,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
 
         router = Conductor.attachRouter(this, screenContainer, savedInstanceState);
+        screenNavigator.initWithRouter(router, initialScreen());
         monitorBackStack();
         super.onCreate(savedInstanceState);
     }
@@ -58,6 +61,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     @LayoutRes
     protected abstract int layoutRes();
 
+    protected abstract Controller initialScreen();
+
     public String getInstanceId() {
         return instanceId;
     }
@@ -65,8 +70,18 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+
+        screenNavigator.clear();
+
         if (isFinishing()) {
             Injector.clearComponent(this);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (!screenNavigator.pop()) {
+            super.onBackPressed();
         }
     }
 
