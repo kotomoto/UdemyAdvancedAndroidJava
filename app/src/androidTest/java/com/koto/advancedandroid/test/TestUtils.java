@@ -1,7 +1,5 @@
 package com.koto.advancedandroid.test;
 
-import com.koto.advancedandroid.model.AdapterFactory;
-import com.koto.advancedandroid.model.ZonedDateTimeAdapter;
 import com.squareup.moshi.Moshi;
 
 import java.io.BufferedReader;
