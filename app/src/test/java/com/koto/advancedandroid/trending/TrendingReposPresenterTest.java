@@ -1,6 +1,6 @@
 package com.koto.advancedandroid.trending;
 
-import com.koto.advancedandroid.data.RepoRequester;
+import com.koto.advancedandroid.data.RepoRepository;
 import com.koto.advancedandroid.data.TrendingReposResponse;
 import com.koto.advancedandroid.model.Repo;
 import com.koto.advancedandroid.testutils.TestUtils;
@@ -25,7 +25,7 @@ import static org.mockito.Mockito.when;
 public class TrendingReposPresenterTest {
 
     @Mock
-    RepoRequester repoRequester;
+    RepoRepository repoRepository;
 
     @Mock
     TrendingReposViewModel viewModel;
@@ -55,7 +55,7 @@ public class TrendingReposPresenterTest {
         List<Repo> repos = setUpSuccess();
         initializePresenter();
 
-        verify(repoRequester).getTrendingRepos();
+        verify(repoRepository).getTrendingRepos();
         verify(onSuccessConsumer).accept(repos);
         verifyZeroInteractions(onErrorConsumer);
     }
@@ -100,7 +100,7 @@ public class TrendingReposPresenterTest {
         TrendingReposResponse response = TestUtils.loadJson("mock/get_trending_repos.json", TrendingReposResponse.class);
         List<Repo> repos = response.repos();
 
-        when(repoRequester.getTrendingRepos()).thenReturn(Single.just(repos));
+        when(repoRepository.getTrendingRepos()).thenReturn(Single.just(repos));
 
         return repos;
     }
@@ -108,12 +108,12 @@ public class TrendingReposPresenterTest {
     private Throwable setUpError() {
         Throwable error = new IOException();
 
-        when(repoRequester.getTrendingRepos()).thenReturn(Single.error(error));
+        when(repoRepository.getTrendingRepos()).thenReturn(Single.error(error));
 
         return error;
     }
 
     private void initializePresenter() {
-        presenter = new TrendingReposPresenter(viewModel, repoRequester);
+        presenter = new TrendingReposPresenter(viewModel, repoRepository);
     }
 }

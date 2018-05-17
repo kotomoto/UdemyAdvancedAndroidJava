@@ -1,8 +1,10 @@
 package com.koto.advancedandroid.base;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +22,14 @@ public abstract class BaseController extends Controller {
     private final CompositeDisposable disposables = new CompositeDisposable();
     private boolean injected = false;
     private Unbinder unbinder;
+
+    public BaseController() {
+        super();
+    }
+
+    public BaseController(@Nullable Bundle bundle) {
+        super(bundle);
+    }
 
     @Override
     protected void onContextAvailable(@NonNull Context context) {

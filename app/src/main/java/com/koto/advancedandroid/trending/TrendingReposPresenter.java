@@ -1,6 +1,6 @@
 package com.koto.advancedandroid.trending;
 
-import com.koto.advancedandroid.data.RepoRequester;
+import com.koto.advancedandroid.data.RepoRepository;
 import com.koto.advancedandroid.di.ScreenScope;
 import com.koto.advancedandroid.model.Repo;
 
@@ -10,18 +10,18 @@ import javax.inject.Inject;
 public class TrendingReposPresenter implements RepoAdapter.RepoClickedListener {
 
     private TrendingReposViewModel viewModel;
-    private RepoRequester repoRequester;
+    private RepoRepository repoRepository;
 
     @Inject
-    TrendingReposPresenter(TrendingReposViewModel viewModel, RepoRequester repoRequester) {
+    TrendingReposPresenter(TrendingReposViewModel viewModel, RepoRepository repoRepository) {
         this.viewModel = viewModel;
-        this.repoRequester = repoRequester;
+        this.repoRepository = repoRepository;
 
         loadRepos();
     }
 
     private void loadRepos() {
-        repoRequester.getTrendingRepos()
+        repoRepository.getTrendingRepos()
                 .doOnSubscribe(__ -> viewModel.loadingUpdated().accept(true))
                 .doOnEvent((data, throwable) -> viewModel.loadingUpdated().accept(false))
                 .subscribe(viewModel.reposUpdated(), viewModel.onError());
