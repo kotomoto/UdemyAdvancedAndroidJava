@@ -9,6 +9,7 @@ import com.koto.advancedandroid.model.Repo;
 import org.threeten.bp.format.DateTimeFormatter;
 
 import java.util.List;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -19,7 +20,7 @@ import timber.log.Timber;
 @ScreenScope
 class RepoDetailsViewModel {
 
-    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("MMM dd, yyyy");
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("MMM dd, yyyy", Locale.US);
 
     private final BehaviorRelay<RepoDetailState> detailStateRelay = BehaviorRelay.create();
     private final BehaviorRelay<ContributorState> contributorStateRelay = BehaviorRelay.create();
@@ -34,7 +35,7 @@ class RepoDetailsViewModel {
         return detailStateRelay;
     }
 
-    Observable<ContributorState> getContributorStateRelay() {
+    Observable<ContributorState> contributors() {
         return contributorStateRelay;
     }
 
